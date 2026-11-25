@@ -100,7 +100,7 @@ function Kanban({ items }: { items: Assignment[] }) {
               setOver(null);
               move(e.dataTransfer.getData("text/plain"), status);
             }}
-            className={cn("flex min-h-64 flex-col rounded-[4px] border bg-surface-2/40 transition-colors", over === status ? "border-accent bg-accent-soft/40" : "border-line")}
+            className={cn("flex min-h-64 flex-col rounded-2xl border bg-surface-2/40 transition-colors", over === status ? "border-accent bg-accent-soft/40" : "border-line")}
           >
             <header className="flex items-center justify-between border-b border-line px-4 py-3">
               <span className="text-sm font-medium text-ink">{STATUS_LABEL[status]}</span>
@@ -118,7 +118,7 @@ function Kanban({ items }: { items: Assignment[] }) {
                     onClick={() => openForm({ kind: "assignment", id: a.id })}
                     onKeyDown={(e) => e.key === "Enter" && openForm({ kind: "assignment", id: a.id })}
                     tabIndex={0}
-                    className="cursor-grab rounded-[3px] border border-line bg-surface p-3 transition-colors hover:border-line-strong active:cursor-grabbing"
+                    className="cursor-grab rounded-xl border border-line bg-surface p-3 transition-colors hover:border-line-strong active:cursor-grabbing"
                     style={{ borderLeft: `3px solid ${c ? TONES[c.tone] : "var(--line-strong)"}` }}
                   >
                     <div className="mb-2 flex items-start justify-between gap-2">
@@ -142,7 +142,7 @@ function Kanban({ items }: { items: Assignment[] }) {
                       value={a.status}
                       onClick={(e) => e.stopPropagation()}
                       onChange={(e) => move(a.id, e.target.value as AssignmentStatus)}
-                      className="mt-2 h-6 w-full rounded-[2px] border border-line bg-transparent px-1 text-[11px] text-muted md:hidden"
+                      className="mt-2 h-6 w-full rounded-lg border border-line bg-transparent px-1 text-[11px] text-muted md:hidden"
                       aria-label="Move to column"
                     >
                       {ASSIGNMENT_STATUSES.map((s) => (
@@ -235,9 +235,9 @@ function AssignmentsInner() {
       : [{ key: "all", title: "", items: viewItems }];
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="04 — Assignments"
+       
         title="Assignments"
         subtitle={`${count("upcoming")} upcoming · ${count("overdue")} overdue · ${count("completed")} completed`}
         actions={
@@ -331,7 +331,7 @@ function AssignmentsInner() {
                   </div>
                 )}
                 {g.items.length ? (
-                  <div className="divide-y divide-line">
+                  <div className="divide-y divide-line/60">
                     {g.items.map((a) => (
                       <ListRow key={a.id} a={a} rank={view === "priority" ? scores.get(a.id) : undefined} />
                     ))}

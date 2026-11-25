@@ -194,7 +194,7 @@ export function EventForm({ id, occurrenceDate, defaults, onClose }: { id?: stri
       }
     >
       {recurring && occurrenceDate && (
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-[3px] bg-surface-2 px-3 py-2.5 text-xs text-muted">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-surface-2 px-3 py-2.5 text-xs text-muted">
           <span>This is a recurring event.</span>
           <Segmented
             label="Edit scope"
@@ -256,7 +256,7 @@ export function EventForm({ id, occurrenceDate, defaults, onClose }: { id?: stri
         </Field>
 
         {!(recurring && scope === "one") && (
-          <div className="col-span-2 grid grid-cols-2 gap-4 rounded-[3px] border border-line p-4 md:col-span-6 md:grid-cols-6">
+          <div className="col-span-2 grid grid-cols-2 gap-4 rounded-xl border border-line p-4 md:col-span-6 md:grid-cols-6">
             <Field label="Repeat" className="col-span-1 md:col-span-2">
               <Select {...register("repeat")}>
                 <option value="none">Does not repeat</option>
@@ -288,7 +288,7 @@ export function EventForm({ id, occurrenceDate, defaults, onClose }: { id?: stri
                               const base = weekdays.length ? weekdays : date ? [new Date(`${date}T00:00:00`).getDay()] : [];
                               setWeekdays(base.includes(i) ? base.filter((x) => x !== i) : [...base, i].sort());
                             }}
-                            className={cn("num size-8 rounded-[3px] border text-xs", on ? "border-ink bg-ink text-bg" : "border-line-strong text-muted hover:text-ink")}
+                            className={cn("num size-8 rounded-xl border text-xs", on ? "border-accent-strong bg-accent-strong text-on-accent-strong" : "border-line-strong text-muted hover:text-ink")}
                           >
                             {d}
                           </button>

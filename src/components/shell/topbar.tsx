@@ -42,8 +42,8 @@ export function QuickAdd() {
         <Plus /> <span className="hidden sm:inline">New</span> <ChevronDown className="!size-3 opacity-60" />
       </Button>
       {open && (
-        <div role="menu" className="fade-in absolute right-0 top-11 z-40 w-56 rounded-[4px] border border-line bg-surface p-1 shadow-[0_12px_32px_-16px_rgba(24,36,43,0.35)]">
-          <div className="eyebrow px-2.5 pb-1 pt-1.5">Quick add</div>
+        <div role="menu" className="pop-in absolute right-0 top-12 z-40 w-60 rounded-2xl border border-line/70 bg-surface p-1.5 shadow-lift">
+          <div className="eyebrow px-3 pb-1 pt-1.5">Add something new</div>
           {items.map((it) => (
             <button
               key={it.label}
@@ -52,11 +52,11 @@ export function QuickAdd() {
                 setOpen(false);
                 it.run();
               }}
-              className="flex h-9 w-full items-center gap-3 rounded-[3px] px-2.5 text-left text-sm text-ink hover:bg-surface-2"
+              className="flex h-10 w-full items-center gap-3 rounded-xl px-3 text-left text-sm text-ink hover:bg-surface-2"
             >
               <it.icon className="size-4 text-faint" strokeWidth={1.6} />
               <span className="flex-1">{it.label}</span>
-              <kbd className="num text-[10px] text-faint">⇧{it.key}</kbd>
+              <kbd className="text-[11px] text-faint">⇧{it.key}</kbd>
             </button>
           ))}
         </div>
@@ -74,25 +74,24 @@ export function Topbar() {
   const current = [...NAV, ...NAV_SECONDARY].find((n) => isActive(pathname, n.href));
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-line bg-bg/90 px-4 backdrop-blur md:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-3 bg-bg/80 px-4 backdrop-blur-md md:px-8">
       <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileNavOpen(true)} aria-label="Open navigation">
         <Menu />
       </Button>
-      <div className="flex min-w-0 items-baseline gap-3">
-        <span className="num hidden text-[11px] text-faint sm:inline">{current?.index ?? "—"}</span>
+      <div className="flex min-w-0 flex-col leading-tight">
         <span className="truncate text-sm font-medium text-ink">{current?.label ?? "UniOS"}</span>
+        <span className="hidden text-xs text-muted sm:inline">{now ? format(now, "EEEE, MMMM d") : ""}</span>
       </div>
       <div className="ml-auto flex items-center gap-2">
         <FocusPill />
-        <span className="num mr-2 hidden text-[11px] uppercase tracking-wider text-faint xl:inline">{now ? format(now, "EEE d MMM · HH:mm") : ""}</span>
         <button
           onClick={() => setSearchOpen(true)}
-          className="flex h-9 items-center gap-2 rounded-[3px] border border-line-strong bg-surface px-3 text-sm text-faint transition-colors hover:text-ink md:w-64"
+          className="flex h-10 items-center gap-2 rounded-full border border-line/70 bg-surface px-4 text-sm text-faint hover:border-line-strong hover:text-ink md:w-64"
           aria-label="Search"
         >
           <Search className="size-4" />
-          <span className="hidden flex-1 text-left md:inline">Search everything</span>
-          <kbd className="num hidden rounded-[2px] border border-line px-1 text-[10px] md:inline">⌘K</kbd>
+          <span className="hidden flex-1 text-left md:inline">Search</span>
+          <kbd className="hidden rounded-md bg-surface-2 px-1.5 text-[11px] md:inline">⌘K</kbd>
         </button>
         <Button
           variant="ghost"

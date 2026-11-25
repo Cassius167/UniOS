@@ -19,18 +19,14 @@ function NavLink({ item, collapsed, onNavigate }: { item: NavItem; collapsed: bo
       aria-current={active ? "page" : undefined}
       title={collapsed ? item.label : undefined}
       className={cn(
-        "group relative flex h-9 items-center gap-3 rounded-[3px] px-2.5 text-[13px] transition-colors",
-        active ? "bg-accent-soft font-medium text-ink" : "text-muted hover:bg-surface-2 hover:text-ink",
+        "group relative flex h-10 items-center gap-3 rounded-full px-3.5 text-sm",
+        active ? "bg-surface font-medium text-ink shadow-soft" : "text-muted hover:bg-surface/70 hover:text-ink",
         collapsed && "justify-center px-0",
       )}
     >
-      {active && <span className="absolute inset-y-1.5 left-0 w-[2px] rounded-full bg-accent" />}
       <Icon className={cn("size-[17px] shrink-0", active ? "text-accent-ink" : "text-faint group-hover:text-ink")} strokeWidth={1.6} />
       {!collapsed && (
-        <>
-          <span className="flex-1 truncate">{item.label}</span>
-          <span className="num text-[10px] text-faint opacity-0 transition-opacity group-hover:opacity-100">{item.index}</span>
-        </>
+        <span className="flex-1 truncate">{item.label}</span>
       )}
     </Link>
   );
@@ -41,27 +37,27 @@ function SidebarBody({ collapsed, onNavigate }: { collapsed: boolean; onNavigate
   const semester = useStore((s) => s.data.settings.semesters.find((x) => x.id === s.data.settings.currentSemesterId));
   return (
     <div className="flex h-full flex-col">
-      <div className={cn("flex h-14 items-center border-b border-line px-4", collapsed && "justify-center px-0")}>
+      <div className={cn("flex h-16 items-center px-6", collapsed && "justify-center px-0")}>
         <Link href="/" onClick={onNavigate} className="flex items-baseline gap-1.5" aria-label="UniOS home">
-          <span className="font-serif text-[26px] leading-none tracking-tight text-ink">{collapsed ? "U" : "UniOS"}</span>
-          {!collapsed && <span className="num text-[9px] uppercase tracking-[0.14em] text-faint">v0.1</span>}
+          <span className="font-serif text-[28px] leading-none text-ink">{collapsed ? "U" : "UniOS"}</span>
         </Link>
       </div>
-      <nav aria-label="Primary" className="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3">
-        {!collapsed && <div className="eyebrow px-2.5 pb-2 pt-1">Workspace</div>}
+      <nav aria-label="Primary" className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-2">
         {NAV.map((item) => (
           <NavLink key={item.href} item={item} collapsed={collapsed} onNavigate={onNavigate} />
         ))}
-        <div className="my-3 border-t border-line" />
+        <div className="my-3 mx-3 border-t border-line/70" />
         {NAV_SECONDARY.map((item) => (
           <NavLink key={item.href} item={item} collapsed={collapsed} onNavigate={onNavigate} />
         ))}
       </nav>
       {!collapsed && (
-        <div className="border-t border-line p-4">
-          <div className="text-[13px] font-medium text-ink">{profile.name || "Student"}</div>
-          <div className="mt-0.5 truncate text-[11px] text-muted">{profile.program || profile.university || "Set up your profile in Settings"}</div>
-          {semester && <div className="num mt-2 text-[10px] uppercase tracking-wider text-faint">{semester.name}</div>}
+        <div className="m-3 flex items-center gap-3 rounded-2xl bg-surface/70 p-3">
+          <div className="grid size-9 shrink-0 place-items-center rounded-full bg-accent-soft font-serif text-lg text-accent-ink">{(profile.name || "S").trim().charAt(0).toUpperCase()}</div>
+          <div className="min-w-0">
+            <div className="truncate text-sm font-medium text-ink">{profile.name || "Student"}</div>
+            <div className="truncate text-xs text-muted">{semester?.name || profile.program || "Set up your profile in Settings"}</div>
+          </div>
         </div>
       )}
     </div>
@@ -74,11 +70,11 @@ export function Sidebar() {
   const { mobileNavOpen, setMobileNavOpen } = useUI();
   return (
     <>
-      <aside className={cn("sticky top-0 hidden h-screen shrink-0 border-r border-line bg-bg transition-[width] duration-200 lg:block", collapsed ? "w-[64px]" : "w-[236px]")}>
+      <aside className={cn("sticky top-0 hidden h-screen shrink-0 bg-surface-2/60 transition-[width] duration-300 ease-out lg:block", collapsed ? "w-[72px]" : "w-[248px]")}>
         <SidebarBody collapsed={collapsed} />
         <button
           onClick={() => updateSettings({ sidebarCollapsed: !collapsed })}
-          className="absolute -right-3 top-[68px] grid size-6 place-items-center rounded-full border border-line-strong bg-surface text-faint hover:text-ink"
+          className="absolute -right-3 top-[72px] grid size-6 place-items-center rounded-full border border-line bg-surface text-faint shadow-soft hover:text-ink"
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
         >
           {collapsed ? <PanelLeftOpen className="size-3" /> : <PanelLeftClose className="size-3" />}
@@ -86,8 +82,8 @@ export function Sidebar() {
       </aside>
       {mobileNavOpen && (
         <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation">
-          <div className="absolute inset-0 bg-[#18242b]/35" onClick={() => setMobileNavOpen(false)} />
-          <div className="fade-in absolute inset-y-0 left-0 w-[260px] border-r border-line bg-bg">
+          <div className="overlay-in absolute inset-0 bg-[#18242b]/25 backdrop-blur-sm" onClick={() => setMobileNavOpen(false)} />
+          <div className="slide-in absolute inset-y-0 left-0 w-[272px] rounded-r-3xl bg-bg shadow-lift">
             <button className="absolute right-3 top-4 text-muted" onClick={() => setMobileNavOpen(false)} aria-label="Close navigation">
               <X className="size-5" />
             </button>

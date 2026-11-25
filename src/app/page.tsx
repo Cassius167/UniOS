@@ -44,7 +44,7 @@ function CustomizeWidgets() {
         <SlidersHorizontal /> Customize
       </Button>
       {open && (
-        <div className="fade-in absolute right-0 top-9 z-20 w-64 rounded-[4px] border border-line bg-surface p-3 shadow-[0_12px_32px_-16px_rgba(24,36,43,0.35)]">
+        <div className="pop-in absolute right-0 top-10 z-20 w-64 rounded-2xl border border-line/70 bg-surface p-3 shadow-lift">
           <div className="eyebrow mb-2">Visible widgets</div>
           {DASHBOARD_WIDGETS.map((w) => (
             <label key={w} className="flex items-center justify-between py-1.5 text-sm text-ink">
@@ -109,24 +109,24 @@ export default function OverviewPage() {
   const hasDemo = data.courses.some((c) => c.isDemo) || data.assignments.some((a) => a.isDemo);
 
   return (
-    <div className="fade-in">
+    <div>
       {/* ───────── Header ───────── */}
-      <header className="mb-10 grid gap-6 border-b border-line pb-8 md:grid-cols-[1fr_auto] md:items-end">
+      <header className="mb-10 grid gap-6 rounded-3xl bg-accent-soft/60 px-6 py-8 md:grid-cols-[1fr_auto] md:items-end md:px-10 md:py-10">
         <div>
-          <div className="num mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] uppercase tracking-[0.1em] text-faint">
-            <span>{format(now, "EEEE, MMMM d, yyyy")}</span>
-            {semester && <span className="text-accent-ink">{semester.name}</span>}
-          </div>
-          <h1 className="font-serif text-5xl leading-[0.95] tracking-tight text-ink md:text-6xl">
+          <p className="mb-3 text-sm text-accent-ink">
+            {format(now, "EEEE, MMMM d")}
+            {semester ? ` in ${semester.name}` : ""}
+          </p>
+          <h1 className="font-serif text-5xl leading-[1.02] text-ink md:text-6xl">
             {greeting(now)}
-            {settings.profile.name ? <span className="italic text-muted">, {settings.profile.name}.</span> : "."}
+            {settings.profile.name ? `, ${settings.profile.name}.` : "."}
           </h1>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
             You have {summaryParts.join(", ")}.
             {top && (
               <>
                 {" "}
-                Suggested next focus: <span className="text-ink">{top.title}</span>.
+                A good place to start: <span className="font-medium text-ink">{top.title}</span>.
               </>
             )}
           </p>
@@ -143,7 +143,7 @@ export default function OverviewPage() {
       </header>
 
       {hasDemo && (
-        <div className="mb-8 flex items-start gap-3 rounded-[3px] border border-dashed border-line-strong px-4 py-3 text-xs text-muted">
+        <div className="mb-8 flex items-start gap-3 rounded-xl border border-dashed border-line-strong px-4 py-3 text-xs text-muted">
           <Info className="mt-0.5 size-3.5 shrink-0" />
           <span>
             You’re looking at demonstration data for a sample UBCO engineering student. Courses, grades and deadlines marked <DemoBadge /> are not real. Edit them, or remove them all in{" "}
@@ -157,16 +157,16 @@ export default function OverviewPage() {
 
       {/* ───────── Today at a glance ───────── */}
       {widgets.today && (
-        <section aria-label="Today at a glance" className="mb-10 grid grid-cols-2 border-y border-line md:grid-cols-4">
+        <section aria-label="Today at a glance" className="mb-10 grid grid-cols-2 gap-3 md:grid-cols-4">
           {[
             { label: "Due today", value: d.dueToday.length + d.subtasksToday.length, sub: d.subtasksToday.length ? `${d.dueToday.length} assignments · ${d.subtasksToday.length} subtasks` : "assignments and subtasks" },
-            { label: "Deadlines · next 7 days", value: d.upcoming7.length, sub: d.overdue.length ? <span className="text-terra">{d.overdue.length} overdue</span> : "none overdue" },
+            { label: "Due this week", value: d.upcoming7.length, sub: d.overdue.length ? <span className="text-terra">{d.overdue.length} overdue</span> : "none overdue" },
             { label: "Completed today", value: d.completedToday.length, sub: `${d.prod.completedCount} this week` },
             { label: "Planned study", value: hours(d.plannedStudy), sub: `${hours(d.studiedToday)} focused so far` },
-          ].map((s, i) => (
-            <div key={s.label} className={cn("px-5 py-5", i % 2 === 1 && "border-l border-line", i >= 2 && "border-t border-line md:border-t-0", i === 2 && "md:border-l")}>
+          ].map((s) => (
+            <div key={s.label} className="rounded-2xl bg-surface px-5 py-5 shadow-soft">
               <div className="eyebrow mb-3">{s.label}</div>
-              <div className="num text-4xl font-light leading-none text-ink">{s.value}</div>
+              <div className="num font-serif text-5xl leading-none text-ink">{s.value}</div>
               <div className="mt-2 text-xs text-muted">{s.sub}</div>
             </div>
           ))}
@@ -187,7 +187,7 @@ export default function OverviewPage() {
               }
             />
             {d.today.length ? (
-              <div className="divide-y divide-line">
+              <div className="divide-y divide-line/60">
                 {d.today.map((o) => (
                   <OccurrenceRow key={o.key} o={o} now={now} />
                 ))}
@@ -220,7 +220,7 @@ export default function OverviewPage() {
             />
             {d.ranked.length ? (
               <>
-                <div className="divide-y divide-line">
+                <div className="divide-y divide-line/60">
                   {d.ranked.slice(0, 6).map((r) => {
                     const a = data.assignments.find((x) => x.id === r.assignmentId)!;
                     return (
@@ -249,9 +249,9 @@ export default function OverviewPage() {
         {/* ───────── Deadlines ───────── */}
         {widgets.deadlines && (
           <Card className="lg:col-span-5">
-            <CardHeader eyebrow="Next five" title="Upcoming deadlines" />
+            <CardHeader title="Upcoming deadlines" />
             {d.deadlines.length ? (
-              <ol className="divide-y divide-line">
+              <ol className="divide-y divide-line/60">
                 {d.deadlines.map((x, i) => {
                   const hoursLeft = (x.at.getTime() - now.getTime()) / 36e5;
                   const bar = hoursLeft < 24 ? "bg-terra" : hoursLeft < 72 ? "bg-ochre" : "bg-line-strong";
@@ -295,14 +295,14 @@ export default function OverviewPage() {
                 </Link>
               }
             />
-            <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 px-5 pb-2 pt-2 sm:grid-cols-4">
               {[
                 ["Study time", hours(d.prod.minutes)],
                 ["Assignments done", d.prod.completedCount],
                 ["Focus sessions", d.prod.sessionCount],
                 ["Completion rate", d.prod.completionRate === null ? "—" : pct(d.prod.completionRate, 0)],
               ].map(([l, v]) => (
-                <div key={l as string} className="bg-surface px-5 py-4">
+                <div key={l as string} className="rounded-xl bg-surface-2/70 px-4 py-3">
                   <div className="eyebrow mb-2">{l}</div>
                   <div className="num text-xl text-ink">{v}</div>
                 </div>
@@ -328,7 +328,7 @@ export default function OverviewPage() {
               </Link>
             </div>
             {courses.length ? (
-              <div className="grid overflow-hidden rounded-[4px] border-l border-t border-line sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {courses.map((c) => {
                   const g = grades.get(c.id);
                   const next = data.assignments.filter((a) => a.courseId === c.id && a.status !== "completed").sort((a, b) => a.dueAt.localeCompare(b.dueAt))[0];
@@ -336,7 +336,7 @@ export default function OverviewPage() {
                   const progress = courseAsg.length ? courseAsg.reduce((s, a) => s + completion(a), 0) / courseAsg.length : 0;
                   const band = bandFor(g?.currentAverage ?? null, settings.gradingScale);
                   return (
-                    <Link key={c.id} href={`/courses/${c.id}`} className="group flex flex-col gap-4 border-b border-r border-line bg-surface p-5 transition-colors hover:bg-surface-2/50">
+                    <Link key={c.id} href={`/courses/${c.id}`} className="group flex flex-col gap-4 rounded-2xl bg-surface p-5 shadow-soft hover:-translate-y-0.5 hover:shadow-lift">
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
                           <div className="num flex items-center gap-2 text-xs text-muted">

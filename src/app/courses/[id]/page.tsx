@@ -79,7 +79,7 @@ export default function CoursePage() {
   };
 
   return (
-    <div className="fade-in">
+    <div>
       <Link href="/courses" className="mb-6 inline-flex items-center gap-1.5 text-xs text-muted hover:text-ink">
         <ArrowLeft className="size-3.5" /> My Courses
       </Link>
@@ -142,7 +142,7 @@ export default function CoursePage() {
         {tab === "overview" && (
           <div className="grid gap-6 lg:grid-cols-12">
             <Card className="lg:col-span-4">
-              <CardHeader eyebrow="Standing" title="Current grade" action={<Link href={`/grades?course=${course.id}`} className="text-xs text-muted hover:text-ink">Grade Tracker</Link>} />
+              <CardHeader title="Current grade" action={<Link href={`/grades?course=${course.id}`} className="text-xs text-muted hover:text-ink">Grade Tracker</Link>} />
               <div className="px-5 py-5">
                 <div className="num text-5xl font-light text-ink">{g?.currentAverage === null || !g ? "—" : `${round(g.currentAverage, 1).toFixed(1)}%`}</div>
                 <div className="mt-1 text-xs text-muted">{band ? `${band.label} · average on completed work` : "No grades yet"}</div>
@@ -169,9 +169,9 @@ export default function CoursePage() {
             </Card>
 
             <Card className="lg:col-span-8">
-              <CardHeader eyebrow="Next up" title="Upcoming deadlines" action={<Button size="sm" variant="ghost" onClick={() => openForm({ kind: "assignment", defaults: { courseId: course.id } })}><ListPlus /> Add</Button>} />
+              <CardHeader title="Upcoming deadlines" action={<Button size="sm" variant="ghost" onClick={() => openForm({ kind: "assignment", defaults: { courseId: course.id } })}><ListPlus /> Add</Button>} />
               {upcoming.length ? (
-                <div className="divide-y divide-line">
+                <div className="divide-y divide-line/60">
                   {upcoming.slice(0, 5).map((a) => (
                     <AssignmentRow key={a.id} a={a} showCourse={false} compact />
                   ))}
@@ -182,7 +182,7 @@ export default function CoursePage() {
             </Card>
 
             <Card className="lg:col-span-4">
-              <CardHeader eyebrow="Course information" title="Details" />
+              <CardHeader title="Details" />
               <dl className="flex flex-col gap-4 px-5 py-4 text-sm">
                 <div>
                   <dt className="eyebrow mb-1">Semester</dt>
@@ -230,9 +230,9 @@ export default function CoursePage() {
             </Card>
 
             <Card className="lg:col-span-4">
-              <CardHeader eyebrow="Latest" title="Recent notes" action={<Button size="sm" variant="ghost" onClick={() => openForm({ kind: "note", defaults: { courseId: course.id } })}><Plus /> New</Button>} />
+              <CardHeader title="Recent notes" action={<Button size="sm" variant="ghost" onClick={() => openForm({ kind: "note", defaults: { courseId: course.id } })}><Plus /> New</Button>} />
               {rel.notes.length ? (
-                <ul className="divide-y divide-line">
+                <ul className="divide-y divide-line/60">
                   {rel.notes.slice(0, 4).map((n) => (
                     <li key={n.id}>
                       <Link href={`/notes?note=${n.id}`} className="block px-5 py-3 hover:bg-surface-2/60">
@@ -269,7 +269,7 @@ export default function CoursePage() {
           <Card>
             <CardHeader title="All assignments" action={<Button size="sm" onClick={() => openForm({ kind: "assignment", defaults: { courseId: course.id } })}><Plus /> New</Button>} />
             {rel.assignments.length ? (
-              <div className="divide-y divide-line">
+              <div className="divide-y divide-line/60">
                 {rel.assignments.map((a) => (
                   <AssignmentRow key={a.id} a={a} showCourse={false} />
                 ))}
@@ -297,7 +297,7 @@ export default function CoursePage() {
               }
             />
             {g && g.items.length ? (
-              <ul className="divide-y divide-line">
+              <ul className="divide-y divide-line/60">
                 {g.items.map((r) => (
                   <li key={r.id}>
                     <button onClick={() => openForm({ kind: "assessment", id: r.id })} className="grid w-full grid-cols-[1fr_70px_80px] items-center gap-3 px-5 py-2.5 text-left text-sm hover:bg-surface-2/60">
@@ -318,7 +318,7 @@ export default function CoursePage() {
           <Card>
             <CardHeader title="Course notes" action={<Button size="sm" onClick={() => openForm({ kind: "note", defaults: { courseId: course.id } })}><Plus /> New note</Button>} />
             {rel.notes.length ? (
-              <ul className="divide-y divide-line">
+              <ul className="divide-y divide-line/60">
                 {rel.notes.map((n) => (
                   <li key={n.id}>
                     <Link href={`/notes?note=${n.id}`} className="flex items-baseline gap-4 px-5 py-3 hover:bg-surface-2/60">
@@ -356,7 +356,7 @@ export default function CoursePage() {
               }
             />
             {rel.sessions.length ? (
-              <ul className="divide-y divide-line">
+              <ul className="divide-y divide-line/60">
                 {rel.sessions.map((s) => (
                   <li key={s.id} className="grid grid-cols-[90px_1fr_auto] items-center gap-4 px-5 py-2.5 text-sm">
                     <span className="num text-xs text-muted">{format(new Date(s.startedAt), "d MMM HH:mm")}</span>

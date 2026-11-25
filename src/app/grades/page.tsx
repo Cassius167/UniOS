@@ -132,7 +132,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
       </Card>
 
       {summary.warnings.map((w) => (
-        <div key={w} className="flex items-center gap-2 rounded-[3px] border border-terra/40 bg-terra-soft px-4 py-2.5 text-xs text-terra">
+        <div key={w} className="flex items-center gap-2 rounded-xl border border-terra/40 bg-terra-soft px-4 py-2.5 text-xs text-terra">
           <AlertTriangle className="size-3.5" /> {w}
         </div>
       ))}
@@ -160,7 +160,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
                   <th className="px-5 py-2.5 text-right font-normal">Points</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="divide-y divide-line/60">
                 {summary.items.map((r) => {
                   const a = items.find((x) => x.id === r.id)!;
                   return (
@@ -224,11 +224,11 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
         <div className="grid gap-6 lg:grid-cols-2">
           {/* Targets */}
           <Card>
-            <CardHeader eyebrow="What do I need?" title="Targets" />
+            <CardHeader eyebrow="What you need on the remaining work" title="Targets" />
             <div className="px-5 py-4">
               <p className="mb-3 text-xs text-muted">Average needed on all remaining work ({f2(summary.openWeight)}% of the course):</p>
               <table className="w-full text-sm">
-                <tbody className="divide-y divide-line">
+                <tbody className="divide-y divide-line/60">
                   {targets.map((t) => (
                     <tr key={t}>
                       <td className="num py-2 text-ink">
@@ -263,7 +263,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
                   )}
                 </div>
                 <table className="w-full text-sm">
-                  <tbody className="divide-y divide-line">
+                  <tbody className="divide-y divide-line/60">
                     {targets.map((t) => {
                       const r = requiredOnAssessment(summary, focusId, t, assume);
                       return (
@@ -295,7 +295,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
               }
             />
             <div className="px-5 py-4">
-              <div className="mb-4 flex items-end justify-between rounded-[3px] bg-surface-2 px-4 py-3">
+              <div className="mb-4 flex items-end justify-between rounded-xl bg-surface-2 px-4 py-3">
                 <div>
                   <div className="eyebrow">Simulated final grade</div>
                   <div className="num text-3xl text-ink">{f2(simulated)}%</div>
@@ -319,7 +319,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
                         max={100}
                         value={scenarioValues[r.id]}
                         onChange={(e) => setHypo((h) => ({ ...h, [r.id]: Number(e.target.value) }))}
-                        className="col-span-2 w-full accent-[var(--accent)]"
+                        className="col-span-2 w-full"
                         aria-label={`Hypothetical score for ${r.name}`}
                       />
                     </label>
@@ -347,7 +347,7 @@ function CourseGrades({ course, items, summary }: { course: Course; items: Asses
 
       {items.length > 0 && (
         <Card>
-          <CardHeader eyebrow="Optional" title="Dropped grades" />
+          <CardHeader title="Dropped grades" />
           <div className="px-5 py-4">
             <DropRules course={course} categories={categories} />
           </div>
@@ -375,9 +375,9 @@ function GradesInner() {
   const overall = graded.length ? graded.reduce((s, c) => s + summaries.get(c.id)!.currentAverage! * (c.credits ?? 1), 0) / totalCredits : null;
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="05 — Grade Tracker"
+       
         title="Grade Tracker"
         subtitle={
           overall === null ? "Enter assessments and grades to see your standing." : (
@@ -406,7 +406,7 @@ function GradesInner() {
                   key={c.id}
                   onClick={() => setSelected(c.id)}
                   aria-current={c.id === course.id}
-                  className={cn("flex min-w-40 items-center gap-3 rounded-[3px] border px-3 py-2.5 text-left transition-colors", c.id === course.id ? "border-line-strong bg-surface" : "border-transparent hover:bg-surface-2")}
+                  className={cn("flex min-w-40 items-center gap-3 rounded-xl border px-3 py-2.5 text-left transition-colors", c.id === course.id ? "border-line-strong bg-surface" : "border-transparent hover:bg-surface-2")}
                 >
                   <span className="h-7 w-[3px] rounded-full" style={{ background: TONES[c.tone] }} />
                   <span className="min-w-0 flex-1">

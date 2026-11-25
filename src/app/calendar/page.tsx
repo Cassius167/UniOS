@@ -81,7 +81,7 @@ function MonthView({ cursor, weekStartsOn, data, onPickDay }: { cursor: Date; we
   const days = eachDayOfInterval({ start: startOfWeek(startOfMonth(cursor), { weekStartsOn }), end: endOfWeek(endOfMonth(cursor), { weekStartsOn }) });
   const today = new Date();
   return (
-    <div className="overflow-hidden rounded-[4px] border border-line bg-surface">
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface">
       <div className="grid grid-cols-7 border-b border-line">
         {days.slice(0, 7).map((d) => (
           <div key={d.toISOString()} className="eyebrow px-3 py-2">
@@ -133,7 +133,7 @@ function MonthView({ cursor, weekStartsOn, data, onPickDay }: { cursor: Date; we
                 over === key && "bg-accent-soft",
               )}
             >
-              <button onClick={() => onPickDay(d)} className={cn("num mb-1 grid size-6 place-items-center rounded-full text-[11px]", isSameDay(d, today) ? "bg-ink text-bg" : isSameMonth(d, cursor) ? "text-ink hover:bg-surface-2" : "text-faint")}>
+              <button onClick={() => onPickDay(d)} className={cn("num mb-1 grid size-6 place-items-center rounded-full text-[11px]", isSameDay(d, today) ? "bg-accent-strong text-on-accent-strong" : isSameMonth(d, cursor) ? "text-ink hover:bg-surface-2" : "text-faint")}>
                 {format(d, "d")}
               </button>
               <div className="flex flex-col gap-0.5">
@@ -144,7 +144,7 @@ function MonthView({ cursor, weekStartsOn, data, onPickDay }: { cursor: Date; we
                       draggable
                       onDragStart={(e) => e.dataTransfer.setData("application/json", JSON.stringify({ kind: "event", id: it.o.event.id, dateKey: it.o.dateKey, start: it.o.start.toISOString() }))}
                       onClick={() => openForm({ kind: "event", id: it.o.event.id, occurrenceDate: it.o.isRecurring ? it.o.dateKey : undefined })}
-                      className="flex items-center gap-1.5 truncate rounded-[2px] px-1 py-0.5 text-left text-[11px] text-ink hover:bg-surface-2"
+                      className="flex items-center gap-1.5 truncate rounded-lg px-1 py-0.5 text-left text-[11px] text-ink hover:bg-surface-2"
                     >
                       <span className="size-1.5 shrink-0 rounded-full" style={{ background: toneFor(it.o, courses) }} />
                       <span className="num text-faint">{it.o.event.allDay ? "" : format(it.o.start, "HH:mm")}</span>
@@ -156,7 +156,7 @@ function MonthView({ cursor, weekStartsOn, data, onPickDay }: { cursor: Date; we
                       draggable
                       onDragStart={(e) => e.dataTransfer.setData("application/json", JSON.stringify({ kind: "deadline", id: it.a.id }))}
                       onClick={() => openForm({ kind: "assignment", id: it.a.id })}
-                      className={cn("flex items-center gap-1.5 truncate rounded-[2px] px-1 py-0.5 text-left text-[11px] hover:bg-surface-2", it.a.status === "completed" ? "text-faint line-through" : "text-terra")}
+                      className={cn("flex items-center gap-1.5 truncate rounded-lg px-1 py-0.5 text-left text-[11px] hover:bg-surface-2", it.a.status === "completed" ? "text-faint line-through" : "text-terra")}
                     >
                       <Flag className="size-2.5 shrink-0" />
                       <span className="truncate">{it.a.title}</span>
@@ -227,7 +227,7 @@ function WeekView({ days, data, now }: { days: Date[]; data: ReturnType<typeof u
   };
 
   return (
-    <div className="overflow-hidden rounded-[4px] border border-line bg-surface">
+    <div className="overflow-hidden rounded-2xl border border-line bg-surface">
       <div className="grid border-b border-line" style={{ gridTemplateColumns: `56px repeat(${days.length}, minmax(0,1fr))` }}>
         <div />
         {days.map((d) => {
@@ -237,7 +237,7 @@ function WeekView({ days, data, now }: { days: Date[]; data: ReturnType<typeof u
             <div key={d.toISOString()} className="border-l border-line px-2 py-2">
               <div className="flex items-baseline gap-1.5">
                 <span className="eyebrow">{format(d, "EEE")}</span>
-                <span className={cn("num text-sm", isSameDay(d, now) ? "rounded-full bg-ink px-1.5 text-bg" : "text-ink")}>{format(d, "d")}</span>
+                <span className={cn("num text-sm", isSameDay(d, now) ? "rounded-full bg-accent-strong px-1.5 text-on-accent-strong" : "text-ink")}>{format(d, "d")}</span>
               </div>
               {[...allDay.map((o) => ({ k: o.key, t: o.event.title, run: () => openForm({ kind: "event", id: o.event.id, occurrenceDate: o.isRecurring ? o.dateKey : undefined }), c: "text-ink" })), ...dl.map((a) => ({ k: a.id, t: a.title, run: () => openForm({ kind: "assignment", id: a.id }), c: a.status === "completed" ? "text-faint line-through" : "text-terra" }))].map((x) => (
                 <button key={x.k} onClick={x.run} className={cn("mt-1 flex w-full items-center gap-1 truncate text-left text-[10px]", x.c)}>
@@ -304,7 +304,7 @@ function WeekView({ days, data, now }: { days: Date[]; data: ReturnType<typeof u
                         e.dataTransfer.setData("application/json", JSON.stringify({ id: o.event.id, dateKey: o.dateKey, grabOffset: e.clientY - rect.top }));
                       }}
                       onClick={() => openForm({ kind: "event", id: o.event.id, occurrenceDate: o.isRecurring ? o.dateKey : undefined })}
-                      className="absolute overflow-hidden rounded-[3px] border border-line bg-surface px-1.5 py-1 text-left transition-shadow hover:z-20 hover:shadow-md"
+                      className="absolute overflow-hidden rounded-xl border border-line bg-surface px-1.5 py-1 text-left transition-shadow hover:z-20 hover:shadow-md"
                       style={{
                         top: Math.max(0, startMin) * (HOUR / 60),
                         height: dur * (HOUR / 60) - 2,
@@ -354,7 +354,7 @@ function DayView({ day, data, now }: { day: Date; data: ReturnType<typeof useCal
           </div>
         </div>
         {occ.length ? (
-          <ol className="divide-y divide-line">
+          <ol className="divide-y divide-line/60">
             {occ.map((o) => {
               const course = o.event.courseId ? courses.get(o.event.courseId) : undefined;
               const past = o.end < now;
@@ -396,7 +396,7 @@ function DayView({ day, data, now }: { day: Date; data: ReturnType<typeof useCal
       <Card className="self-start">
         <div className="border-b border-line px-5 py-3.5 text-sm font-semibold text-ink">Due this day</div>
         {dl.length ? (
-          <ul className="divide-y divide-line">
+          <ul className="divide-y divide-line/60">
             {dl.map((a: Assignment) => (
               <li key={a.id}>
                 <button onClick={() => openForm({ kind: "assignment", id: a.id })} className="w-full px-5 py-3 text-left hover:bg-surface-2/60">
@@ -455,17 +455,17 @@ function QuickAddEvent({ defaultDate }: { defaultDate: Date }) {
     setTitle("");
   };
   return (
-    <form onSubmit={submit} className="mb-5 flex flex-wrap items-center gap-2 rounded-[4px] border border-line bg-surface p-2">
+    <form onSubmit={submit} className="mb-5 flex flex-wrap items-center gap-2 rounded-2xl border border-line bg-surface p-2">
       <Zap className="ml-1.5 size-4 text-faint" />
       <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Quick add: e.g. Review chapter 5" className="h-8 min-w-40 flex-1 bg-transparent text-sm text-ink placeholder:text-faint focus:outline-none" aria-label="Event title" />
-      <select value={type} onChange={(e) => setType(e.target.value as CalendarEvent["type"])} className="h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Type">
+      <select value={type} onChange={(e) => setType(e.target.value as CalendarEvent["type"])} className="h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Type">
         {EVENT_TYPES.filter((t) => t !== "deadline").map((t) => (
           <option key={t} value={t}>
             {EVENT_TYPE_LABEL[t]}
           </option>
         ))}
       </select>
-      <select value={courseId} onChange={(e) => setCourseId(e.target.value)} className="h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Course">
+      <select value={courseId} onChange={(e) => setCourseId(e.target.value)} className="h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Course">
         <option value="">No course</option>
         {courses.map((c) => (
           <option key={c.id} value={c.id}>
@@ -473,9 +473,9 @@ function QuickAddEvent({ defaultDate }: { defaultDate: Date }) {
           </option>
         ))}
       </select>
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="num h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Date" />
-      <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="num h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Start time" />
-      <select value={dur} onChange={(e) => setDur(e.target.value)} className="h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Duration">
+      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="num h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Date" />
+      <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="num h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Start time" />
+      <select value={dur} onChange={(e) => setDur(e.target.value)} className="h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Duration">
         {[30, 45, 60, 90, 120, 180].map((m) => (
           <option key={m} value={m}>
             {m < 60 ? `${m} min` : `${m / 60} h`}
@@ -543,9 +543,9 @@ function CalendarInner() {
         : format(cursor, "EEEE d MMMM yyyy");
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="02 — Calendar"
+       
         title="Calendar"
         subtitle="Classes, exams, study sessions and deadlines. Drag events to reschedule; click an empty slot to add one."
         actions={
@@ -611,7 +611,6 @@ function CalendarInner() {
       )}
       {view === "week" && <WeekView days={eachDayOfInterval(range)} data={data} now={now} />}
       {view === "day" && <DayView day={cursor} data={data} now={now} />}
-      <p className="num mt-3 text-[10px] uppercase tracking-wider text-faint">Keys: ← → navigate · T today · M / W / D switch view</p>
     </div>
   );
 }

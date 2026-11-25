@@ -82,9 +82,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="10 — Settings"
+       
         title="Settings"
         subtitle={lastSavedAt ? `All changes save automatically · last saved ${format(new Date(lastSavedAt), "HH:mm:ss")}` : "All changes save automatically to this browser."}
       />
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           </div>
           <div className="flex flex-col gap-2">
             {settings.semesters.map((s) => (
-              <div key={s.id} className="grid grid-cols-[auto_1fr] items-center gap-2 rounded-[3px] border border-line p-2 md:grid-cols-[auto_1fr_150px_150px_auto]">
+              <div key={s.id} className="grid grid-cols-[auto_1fr] items-center gap-2 rounded-xl border border-line p-2 md:grid-cols-[auto_1fr_150px_150px_auto]">
                 <input type="radio" name="current-sem" checked={settings.currentSemesterId === s.id} onChange={() => updateSettings({ currentSemesterId: s.id })} aria-label={`Make ${s.name} current`} className="accent-[var(--accent)]" />
                 <Input value={s.name} onChange={(e) => setSemester(s.id, { name: e.target.value })} className="h-8" aria-label="Semester name" />
                 <Input type="date" value={s.startDate} onChange={(e) => setSemester(s.id, { startDate: e.target.value })} className="h-8" aria-label="Start date" />
@@ -201,7 +201,7 @@ export default function SettingsPage() {
               {[...settings.gradingScale]
                 .sort((a, b) => b.min - a.min)
                 .map((b, i) => (
-                  <div key={i} className="flex items-center gap-1 rounded-[3px] border border-line px-2 py-1.5">
+                  <div key={i} className="flex items-center gap-1 rounded-xl border border-line px-2 py-1.5">
                     <input
                       value={b.label}
                       onChange={(e) => updateSettings({ gradingScale: settings.gradingScale.map((x) => (x === b ? { ...x, label: e.target.value } : x)) })}

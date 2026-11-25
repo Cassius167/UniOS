@@ -14,9 +14,9 @@ import { hours, pct } from "@/lib/utils";
 
 function Kpi({ label, value, sub }: { label: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
-    <div className="bg-surface px-5 py-5">
+    <div className="rounded-2xl bg-surface px-5 py-5 shadow-soft">
       <div className="eyebrow mb-3">{label}</div>
-      <div className="num text-3xl font-light leading-none text-ink">{value}</div>
+      <div className="num font-serif text-4xl leading-none text-ink">{value}</div>
       {sub && <div className="mt-2 text-[11px] text-muted">{sub}</div>}
     </div>
   );
@@ -55,9 +55,9 @@ export default function AnalyticsPage() {
   const activeWeeks = a.weeks.filter((w) => w.minutes > 0).length;
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="08 — Analytics"
+       
         title="Analytics"
         subtitle="Every figure is calculated from what you’ve recorded: grades, completed assignments and focus sessions."
         actions={
@@ -74,7 +74,7 @@ export default function AnalyticsPage() {
       />
 
       <h2 className="eyebrow mb-3">Academic</h2>
-      <div className="mb-6 grid grid-cols-2 gap-px overflow-hidden rounded-[4px] border border-line bg-line md:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Kpi label="Average across courses" value={avg === null ? "—" : `${round(avg, 1)}%`} sub={avg === null ? "No grades yet" : `${bandFor(avg, data.settings.gradingScale)?.label} · credit-weighted, ${graded.length} courses`} />
         <Kpi label="Assignment completion" value={pastDoneRate === null ? "—" : pct(pastDoneRate, 0)} sub={`${pastDue.filter((x) => x.status === "completed").length} of ${pastDue.length} past-due assignments done`} />
         <Kpi label={`Completed ${period === "week" ? "this week" : "this month"}`} value={a.prod.completedCount} sub="assignments marked complete" />
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
       </div>
 
       <h2 className="eyebrow mb-3">Productivity · {format(a.range.start, "d MMM")} – {format(a.range.end, "d MMM")}</h2>
-      <div className="mb-6 grid grid-cols-2 gap-px overflow-hidden rounded-[4px] border border-line bg-line md:grid-cols-4">
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <Kpi label="Total study time" value={hours(a.prod.minutes)} sub={`${a.prod.sessionCount} focus sessions`} />
         <Kpi label="Average session" value={a.prod.avgSessionMinutes === null ? "—" : hours(a.prod.avgSessionMinutes)} sub={a.prod.avgRating === null ? "No ratings" : `Average rating ${round(a.prod.avgRating, 1)} / 5`} />
         <Kpi label="Distractions logged" value={a.prod.distractions} sub={a.prod.sessionCount ? `${round(a.prod.distractions / a.prod.sessionCount, 2)} per session` : "—"} />

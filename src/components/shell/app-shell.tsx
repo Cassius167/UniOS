@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 import { useStore } from "@/lib/store";
 import { Sidebar } from "./sidebar";
@@ -17,6 +18,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const status = useStore((s) => s.status);
   const error = useStore((s) => s.error);
   const hydrate = useStore((s) => s.hydrate);
+  const pathname = usePathname();
 
   useEffect(() => {
     void hydrate();
@@ -31,9 +33,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Topbar />
           <main id="main" className="mx-auto w-full max-w-[1320px] flex-1 px-4 pb-16 pt-8 md:px-8 lg:px-10">
             {status === "ready" ? (
-              children
+              <div key={pathname} className="fade-in">
+                {children}
+              </div>
             ) : status === "error" ? (
-              <div className="mx-auto mt-20 max-w-md rounded-[4px] border border-terra/40 bg-terra-soft p-6 text-sm">
+              <div className="mx-auto mt-20 max-w-md rounded-2xl border border-terra/40 bg-terra-soft p-6 text-sm">
                 <div className="mb-2 flex items-center gap-2 font-medium text-terra">
                   <AlertTriangle className="size-4" /> Your data could not be loaded
                 </div>
@@ -59,7 +63,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </>
       )}
       {status === "ready" && error && (
-        <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-[4px] border border-terra/50 bg-terra-soft px-4 py-2 text-xs text-terra">{error}</div>
+        <div className="fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-2xl border border-terra/50 bg-terra-soft px-4 py-2 text-xs text-terra">{error}</div>
       )}
       <Toaster />
     </ConfirmProvider>

@@ -58,9 +58,9 @@ function Setup() {
               ["custom", `${custom} min`, "Custom"],
             ] as [SessionKind, string, string][]
           ).map(([k, t, l]) => (
-            <button key={k} onClick={() => setKind(k)} aria-pressed={kind === k} className={cn("rounded-[3px] border px-4 py-4 text-left transition-colors", kind === k ? "border-ink bg-ink text-bg" : "border-line-strong hover:border-ink/40")}>
+            <button key={k} onClick={() => setKind(k)} aria-pressed={kind === k} className={cn("rounded-xl border px-4 py-4 text-left transition-colors", kind === k ? "border-accent-strong bg-accent-strong text-on-accent-strong" : "border-line-strong hover:border-ink/40")}>
               <div className="num text-2xl">{t}</div>
-              <div className={cn("text-xs", kind === k ? "text-bg/70" : "text-muted")}>{l}</div>
+              <div className={cn("text-xs", kind === k ? "text-on-accent-strong/75" : "text-muted")}>{l}</div>
             </button>
           ))}
         </div>
@@ -211,14 +211,14 @@ function Running() {
       </div>
       <div className="relative grid place-items-center">
         <svg width={320} height={320} viewBox="0 0 320 320" className="-rotate-90" aria-hidden>
-          <circle cx={160} cy={160} r={R} fill="none" stroke="var(--line)" strokeWidth={2} />
-          <circle cx={160} cy={160} r={R} fill="none" stroke={f.mode === "break" ? "var(--ochre)" : "var(--accent)"} strokeWidth={3} strokeDasharray={C} strokeDashoffset={C * (1 - progress)} strokeLinecap="round" style={{ transition: "stroke-dashoffset 250ms linear" }} />
+          <circle cx={160} cy={160} r={R} fill="none" stroke="var(--surface-2)" strokeWidth={10} />
+          <circle cx={160} cy={160} r={R} fill="none" stroke={f.mode === "break" ? "var(--ochre)" : "var(--accent)"} strokeWidth={10} strokeDasharray={C} strokeDashoffset={C * (1 - progress)} strokeLinecap="round" style={{ transition: "stroke-dashoffset 250ms linear" }} />
         </svg>
         <div className="absolute text-center">
-          <div className="num text-7xl font-light tracking-tight text-ink" role="timer" aria-live="off">
+          <div className="num font-serif text-8xl text-ink" role="timer" aria-live="off">
             {mmss(remaining)}
           </div>
-          <div className="num mt-2 text-[11px] uppercase tracking-wider text-faint">{f.phase === "paused" ? "Paused" : `${Math.round(progress * 100)}% complete`}</div>
+          <div className="mt-2 text-sm text-muted">{f.phase === "paused" ? "Paused" : `${Math.round(progress * 100)}% complete`}</div>
         </div>
       </div>
       <div className="mt-10 flex gap-3">
@@ -288,7 +288,7 @@ function Review() {
         <div className="eyebrow mb-2">How productive was it? (optional)</div>
         <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map((n) => (
-            <button key={n} onClick={() => setRating(rating === n ? null : n)} aria-pressed={rating === n} className={cn("num size-10 rounded-[3px] border text-sm", rating !== null && n <= rating ? "border-accent bg-accent text-on-accent" : "border-line-strong text-muted hover:text-ink")}>
+            <button key={n} onClick={() => setRating(rating === n ? null : n)} aria-pressed={rating === n} className={cn("num size-10 rounded-xl border text-sm", rating !== null && n <= rating ? "border-accent bg-accent text-on-accent" : "border-line-strong text-muted hover:text-ink")}>
               {n}
             </button>
           ))}
@@ -323,7 +323,7 @@ function History() {
     <Card className="mt-10">
       <CardHeader eyebrow={`Today: ${today.length} sessions · ${hours(today.reduce((s, x) => s + x.actualMinutes, 0))}`} title="Recent sessions" />
       {recent.length ? (
-        <ul className="divide-y divide-line">
+        <ul className="divide-y divide-line/60">
           {recent.map((s) => (
             <li key={s.id} className="group grid grid-cols-[100px_1fr_auto_auto] items-center gap-4 px-5 py-2.5 text-sm">
               <span className="num text-xs text-muted">{format(new Date(s.startedAt), "EEE d MMM HH:mm")}</span>
@@ -361,8 +361,8 @@ function FocusInner() {
   useEffect(() => setHydrated(true), []);
   if (!hydrated) return null;
   return (
-    <div className="fade-in">
-      <PageHeader index="06 — Focus" title="Focus" subtitle="A quiet timer for deliberate study. Sessions are recorded with their course, task and distractions." />
+    <div>
+      <PageHeader title="Focus" subtitle="A quiet timer for deliberate study. Sessions are recorded with their course, task and distractions." />
       {phase === "idle" && <Setup />}
       {(phase === "running" || phase === "paused") && <Running />}
       {phase === "review" && <Review />}

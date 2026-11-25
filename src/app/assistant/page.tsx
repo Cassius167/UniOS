@@ -31,12 +31,12 @@ export default function AssistantPage() {
   }, []);
 
   return (
-    <div className="fade-in">
-      <PageHeader index="09 — Study Assistant" title="Study Assistant" subtitle="An AI assistant for your courses is planned for a later phase. Nothing on this page pretends to answer questions yet." />
+    <div>
+      <PageHeader title="Study Assistant" subtitle="An AI assistant for your courses is planned for a later phase. Nothing on this page pretends to answer questions yet." />
       <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
         <Card>
-          <CardHeader eyebrow="Phase 4" title="Planned capabilities" />
-          <ul className="divide-y divide-line">
+          <CardHeader title="Planned capabilities" />
+          <ul className="divide-y divide-line/60">
             {PLANNED.map(([t, d]) => (
               <li key={t} className="flex items-start gap-4 px-5 py-4">
                 <CircleDashed className="mt-0.5 size-4 shrink-0 text-faint" />

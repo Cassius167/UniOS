@@ -245,7 +245,7 @@ export function AssignmentForm({ id, defaults, onClose }: { id?: string; default
             </Button>
           )}
         </div>
-        <ul className="flex flex-col divide-y divide-line rounded-[3px] border border-line">
+        <ul className="flex flex-col divide-y divide-line/60 rounded-xl border border-line">
           {subtasks.map((s, i) => (
             <li key={s.id} className="flex items-center gap-2 px-3 py-1.5">
               <GripVertical className="size-3.5 text-faint" />
@@ -262,20 +262,20 @@ export function AssignmentForm({ id, defaults, onClose }: { id?: string; default
                 value={s.estimatedMinutes ?? ""}
                 onChange={(e) => setSubtasks((xs) => xs.map((x) => (x.id === s.id ? { ...x, estimatedMinutes: e.target.value === "" ? null : Math.max(0, Number(e.target.value)) } : x)))}
                 placeholder="min"
-                className="num h-7 w-14 rounded-[2px] border border-line bg-transparent px-1.5 text-xs text-ink"
+                className="num h-7 w-14 rounded-lg border border-line bg-transparent px-1.5 text-xs text-ink"
                 aria-label="Estimated minutes"
               />
               <input
                 type="date"
                 value={s.dueDate ?? ""}
                 onChange={(e) => setSubtasks((xs) => xs.map((x) => (x.id === s.id ? { ...x, dueDate: e.target.value || null } : x)))}
-                className="num hidden h-7 rounded-[2px] border border-line bg-transparent px-1.5 text-xs text-ink sm:block"
+                className="num hidden h-7 rounded-lg border border-line bg-transparent px-1.5 text-xs text-ink sm:block"
                 aria-label="Subtask due date"
               />
               <select
                 value={s.priority}
                 onChange={(e) => setSubtasks((xs) => xs.map((x) => (x.id === s.id ? { ...x, priority: e.target.value as Subtask["priority"] } : x)))}
-                className="h-7 rounded-[2px] border border-line bg-transparent px-1 text-xs text-ink"
+                className="h-7 rounded-lg border border-line bg-transparent px-1 text-xs text-ink"
                 aria-label="Subtask priority"
               >
                 {PRIORITIES.map((p) => (

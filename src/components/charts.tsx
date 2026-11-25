@@ -7,12 +7,12 @@
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { ReactNode } from "react";
 
-const tick = { fontFamily: "var(--font-mono)", fontSize: 10, fill: "var(--faint)" };
+const tick = { fontFamily: "var(--font-sans)", fontSize: 11, fill: "var(--faint)" };
 
 function Tip({ active, payload, label, format }: { active?: boolean; payload?: { value: number; name?: string }[]; label?: string; format: (v: number) => string }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-[3px] border border-line bg-surface px-2.5 py-1.5 text-xs shadow-sm">
+    <div className="rounded-xl border border-line bg-surface px-2.5 py-1.5 text-xs shadow-sm">
       <div className="num text-[10px] text-faint">{label}</div>
       {payload.map((p, i) => (
         <div key={i} className="num text-ink">
@@ -44,12 +44,12 @@ export function Bars<T extends Record<string, unknown>>({
 }) {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data} margin={{ top: 8, right: 4, left: yTicks ? -12 : -40, bottom: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--line)" />
+      <BarChart data={data} margin={{ top: 8, right: 4, left: yTicks ? -4 : -40, bottom: 0 }}>
+        <CartesianGrid vertical={false} stroke="var(--line)" strokeDasharray="4 6" />
         <XAxis dataKey={x as string} tick={tick} axisLine={false} tickLine={false} interval={0} />
         <YAxis tick={yTicks ? tick : false} axisLine={false} tickLine={false} width={44} tickFormatter={(v) => format(Number(v))} allowDecimals={false} />
         <Tooltip cursor={{ fill: "var(--surface-2)" }} content={<Tip format={format} />} />
-        <Bar dataKey={y as string} radius={[2, 2, 0, 0]} maxBarSize={28} isAnimationActive={false}>
+        <Bar dataKey={y as string} radius={[8, 8, 8, 8]} maxBarSize={28} animationDuration={600}>
           {data.map((_, i) => (
             <Cell key={i} fill={colors?.[i] ?? (highlightIndex === i ? "var(--accent-ink)" : "var(--accent)")} />
           ))}
@@ -80,15 +80,15 @@ export function Lines<T extends Record<string, unknown>>({
 }) {
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <LineChart data={data} margin={{ top: 8, right: 12, left: -12, bottom: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--line)" />
+      <LineChart data={data} margin={{ top: 8, right: 12, left: -4, bottom: 0 }}>
+        <CartesianGrid vertical={false} stroke="var(--line)" strokeDasharray="4 6" />
         <XAxis dataKey={x as string} tick={tick} axisLine={false} tickLine={false} tickFormatter={xLabel} />
         <YAxis tick={tick} axisLine={false} tickLine={false} domain={domain} width={44} tickFormatter={(v) => format(Number(v))} />
         <Tooltip content={<Tip format={format} />} />
         {refs.map((r) => (
-          <ReferenceLine key={r.label} y={r.y} stroke={r.tone ?? "var(--terra)"} strokeDasharray="3 3" label={{ value: r.label, position: "insideTopRight", fill: r.tone ?? "var(--terra)", fontSize: 10, fontFamily: "var(--font-mono)" }} />
+          <ReferenceLine key={r.label} y={r.y} stroke={r.tone ?? "var(--terra)"} strokeDasharray="3 3" label={{ value: r.label, position: "insideTopRight", fill: r.tone ?? "var(--terra)", fontSize: 11, fontFamily: "var(--font-sans)" }} />
         ))}
-        <Line type="monotone" dataKey={y as string} stroke="var(--ink)" strokeWidth={1.5} dot={{ r: 2.5, fill: "var(--surface)", stroke: "var(--ink)" }} isAnimationActive={false} />
+        <Line type="monotone" dataKey={y as string} stroke="var(--accent-strong)" strokeWidth={2.5} dot={{ r: 3.5, fill: "var(--surface)", stroke: "var(--accent-strong)", strokeWidth: 2 }} animationDuration={700} />
       </LineChart>
     </ResponsiveContainer>
   );

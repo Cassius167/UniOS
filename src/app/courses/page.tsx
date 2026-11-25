@@ -23,9 +23,9 @@ export default function CoursesPage() {
   const semesterName = (id: string | null) => settings.semesters.find((s) => s.id === id)?.name ?? "No semester";
 
   return (
-    <div className="fade-in">
+    <div>
       <PageHeader
-        index="03 — My Courses"
+       
         title="My Courses"
         subtitle={`${courses.filter((c) => !c.archived).length} active · ${courses.filter((c) => c.archived).length} archived`}
         actions={

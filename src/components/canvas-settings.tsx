@@ -66,7 +66,7 @@ function ImportPreview({ exp, onClose }: { exp: CanvasExport; onClose: () => voi
       }
     >
       <p className="mb-4 text-xs leading-relaxed text-muted">Choose which Canvas courses to bring in. Matching courses already in UniOS are updated, not duplicated. Your own priorities, subtasks and completion status are kept. Ungraded work stays ungraded and never counts as zero.</p>
-      <ul className="divide-y divide-line rounded-[3px] border border-line">
+      <ul className="divide-y divide-line/60 rounded-xl border border-line">
         {plan.map((p) => (
           <li key={p.canvasId} className="flex items-start gap-3 px-4 py-3">
             <Checkbox
@@ -233,7 +233,7 @@ export function CanvasSettings() {
                   e.preventDefault();
                   toast.info("Drag this button to your bookmarks bar, then click it while on Canvas.");
                 }}
-                className="inline-flex h-8 cursor-grab items-center gap-2 rounded-[3px] border border-ink bg-ink px-3 text-xs font-medium text-bg"
+                className="inline-flex h-8 cursor-grab items-center gap-2 rounded-xl border border-accent-strong bg-accent-strong px-3 text-xs font-medium text-on-accent-strong"
               >
                 <Bookmark className="size-3.5" /> Export to UniOS
               </a>

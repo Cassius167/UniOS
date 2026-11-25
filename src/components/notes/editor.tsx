@@ -84,7 +84,7 @@ export function RichEditor({ docKey, html, onChange, placeholder = "Start writin
       <div role="toolbar" aria-label="Formatting" className="sticky top-14 z-10 flex flex-wrap items-center gap-0.5 border-b border-line bg-surface px-3 py-1.5">
         {tools.map((t) => (
           <span key={t.label} className="flex items-center">
-            <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={t.run} title={t.label} aria-label={t.label} className="grid size-7 place-items-center rounded-[3px] text-muted hover:bg-surface-2 hover:text-ink">
+            <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={t.run} title={t.label} aria-label={t.label} className="grid size-7 place-items-center rounded-xl text-muted hover:bg-surface-2 hover:text-ink">
               <t.icon className="size-3.5" />
             </button>
             {t.sep && <span className="mx-1 h-4 w-px bg-line" />}

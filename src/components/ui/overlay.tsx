@@ -70,9 +70,9 @@ export function Modal({
   if (!open || !mounted) return null;
   const width = size === "sm" ? "max-w-md" : size === "lg" ? "max-w-3xl" : "max-w-xl";
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#18242b]/35 p-0 backdrop-blur-[1px] sm:items-start sm:p-6 sm:pt-[8vh]" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div ref={panel} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className={cn("fade-in flex max-h-[92vh] w-full flex-col rounded-t-[6px] border border-line bg-surface sm:rounded-[4px]", width)}>
-        <div className="flex items-start justify-between gap-4 border-b border-line px-6 py-4">
+    <div className="overlay-in fixed inset-0 z-50 flex items-end justify-center bg-[#18242b]/25 p-0 backdrop-blur-sm sm:items-start sm:p-6 sm:pt-[8vh]" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div ref={panel} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1} className={cn("pop-in flex max-h-[92vh] w-full flex-col rounded-t-3xl border border-line/70 bg-surface shadow-lift sm:rounded-3xl", width)}>
+        <div className="flex items-start justify-between gap-4 px-6 pb-2 pt-5">
           <div>
             {eyebrow && <div className="eyebrow mb-1">{eyebrow}</div>}
             <h2 className="font-serif text-2xl leading-tight text-ink">{title}</h2>
@@ -82,7 +82,7 @@ export function Modal({
           </Button>
         </div>
         <div className="overflow-y-auto px-6 py-5">{children}</div>
-        {footer && <div className="flex items-center justify-end gap-2 border-t border-line px-6 py-3.5">{footer}</div>}
+        {footer && <div className="flex items-center justify-end gap-2 border-t border-line/70 px-6 py-4">{footer}</div>}
       </div>
     </div>,
     document.body,
@@ -165,8 +165,8 @@ export function Toaster() {
       {items.map((t) => {
         const Icon = t.kind === "success" ? CheckCircle2 : t.kind === "error" ? AlertTriangle : Info;
         return (
-          <div key={t.id} className="fade-in pointer-events-auto flex items-center gap-3 rounded-[4px] border border-line-strong bg-ink px-4 py-3 text-sm text-bg shadow-[0_8px_24px_-12px_rgba(24,36,43,0.4)]">
-            <Icon className={cn("size-4 shrink-0", t.kind === "error" ? "text-terra" : "text-sage")} />
+          <div key={t.id} className="pop-in pointer-events-auto flex items-center gap-3 rounded-2xl border border-line/70 bg-surface px-4 py-3 text-sm text-ink shadow-lift">
+            <Icon className={cn("size-4 shrink-0", t.kind === "error" ? "text-terra" : "text-accent")} />
             <span className="flex-1">{t.message}</span>
             {t.action && (
               <button

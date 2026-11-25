@@ -44,4 +44,4 @@ export function useResolvedTheme(): "light" | "dark" {
   return theme === "dark" || (theme === "system" && sys) ? "dark" : "light";
 }
 
-export const themeBootScript = `(function(){try{var s=JSON.parse(localStorage.getItem('unios:theme')||'{}');var t=s.theme||'system';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');document.documentElement.dataset.accent=s.accent||'sage';}catch(e){}})();`;
+export const themeBootScript = `(function(){try{var s=JSON.parse(localStorage.getItem('unios:theme')||'{}');var t=s.theme||'light';var d=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);if(d)document.documentElement.classList.add('dark');document.documentElement.dataset.accent=s.accent||'sage';}catch(e){}})();`;

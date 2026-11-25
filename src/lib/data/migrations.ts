@@ -22,6 +22,10 @@ export function migrate(input: unknown): AppData {
   settings.canvas = { ...defaults.canvas, ...(raw.settings?.canvas ?? {}) };
   settings.dashboardWidgets = { ...defaults.dashboardWidgets, ...(raw.settings?.dashboardWidgets ?? {}) };
 
+  // v2: the redesign defaults to the light theme. Earlier data stored "system"
+  // as an untouched default, so move it to light once; an explicit "dark" stays.
+  if (raw.schemaVersion < 2 && settings.theme === "system") settings.theme = "light";
+
   const arr = <K extends keyof AppData>(k: K) => (Array.isArray(raw[k]) ? raw[k] : base[k]) as AppData[K];
 
   return {

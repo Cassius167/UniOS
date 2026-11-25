@@ -180,7 +180,7 @@ export function CourseForm({ id, onClose }: { id?: string; onClose: () => void }
                 aria-label={t}
                 aria-pressed={tone === t}
                 onClick={() => setTone(t)}
-                className={cn("size-7 rounded-[3px] border-2", tone === t ? "border-ink" : "border-transparent")}
+                className={cn("size-7 rounded-xl border-2", tone === t ? "border-ink" : "border-transparent")}
                 style={{ background: TONES[t] }}
               />
             ))}
@@ -213,8 +213,8 @@ export function CourseForm({ id, onClose }: { id?: string; onClose: () => void }
             {meetings.map((m) => {
               const set = (p: Partial<Meeting>) => setMeetings((xs) => xs.map((x) => (x.key === m.key ? { ...x, ...p } : x)));
               return (
-                <div key={m.key} className="flex flex-wrap items-center gap-2 rounded-[3px] border border-line p-2">
-                  <select value={m.type} onChange={(e) => set({ type: e.target.value as EventType })} className="h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Meeting type">
+                <div key={m.key} className="flex flex-wrap items-center gap-2 rounded-xl border border-line p-2">
+                  <select value={m.type} onChange={(e) => set({ type: e.target.value as EventType })} className="h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Meeting type">
                     {(["lecture", "lab", "tutorial"] as EventType[]).map((t) => (
                       <option key={t} value={t}>
                         {EVENT_TYPE_LABEL[t]}
@@ -228,16 +228,16 @@ export function CourseForm({ id, onClose }: { id?: string; onClose: () => void }
                         type="button"
                         aria-pressed={m.days.includes(i)}
                         onClick={() => set({ days: m.days.includes(i) ? m.days.filter((x) => x !== i) : [...m.days, i].sort() })}
-                        className={cn("num size-7 rounded-[2px] border text-[11px]", m.days.includes(i) ? "border-ink bg-ink text-bg" : "border-line-strong text-muted")}
+                        className={cn("num size-7 rounded-lg border text-[11px]", m.days.includes(i) ? "border-accent-strong bg-accent-strong text-on-accent-strong" : "border-line-strong text-muted")}
                       >
                         {d}
                       </button>
                     ))}
                   </div>
-                  <input type="time" value={m.start} onChange={(e) => set({ start: e.target.value })} className="num h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Start" />
+                  <input type="time" value={m.start} onChange={(e) => set({ start: e.target.value })} className="num h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Start" />
                   <span className="text-faint">–</span>
-                  <input type="time" value={m.end} onChange={(e) => set({ end: e.target.value })} className="num h-8 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="End" />
-                  <input value={m.location} onChange={(e) => set({ location: e.target.value })} placeholder="Room" className="h-8 min-w-24 flex-1 rounded-[2px] border border-line bg-surface px-2 text-xs" aria-label="Location" />
+                  <input type="time" value={m.end} onChange={(e) => set({ end: e.target.value })} className="num h-8 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="End" />
+                  <input value={m.location} onChange={(e) => set({ location: e.target.value })} placeholder="Room" className="h-8 min-w-24 flex-1 rounded-lg border border-line bg-surface px-2 text-xs" aria-label="Location" />
                   <button onClick={() => setMeetings((xs) => xs.filter((x) => x.key !== m.key))} className="text-faint hover:text-terra" aria-label="Remove meeting">
                     <Trash2 className="size-3.5" />
                   </button>

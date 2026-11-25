@@ -137,7 +137,7 @@ export function ResourceForm({ courseId, onClose }: { courseId?: string | null; 
                   if (!title) setTitle(f.name.replace(/\.[^.]+$/, ""));
                 }
               }}
-              className="flex w-full flex-col items-center gap-1 rounded-[3px] border border-dashed border-line-strong px-4 py-8 text-sm text-muted hover:border-ink/40"
+              className="flex w-full flex-col items-center gap-1 rounded-xl border border-dashed border-line-strong px-4 py-8 text-sm text-muted hover:border-ink/40"
             >
               <Upload className="size-5 text-faint" />
               {file ? (
@@ -263,7 +263,7 @@ export function ResourceLibrary({ courseId, initialQuery = "" }: { courseId?: st
                 <span className="eyebrow">{g}</span>
                 <span className="num text-[11px] text-faint">{list.filter((r) => r.category === g).length}</span>
               </div>
-              <ul className="divide-y divide-line">
+              <ul className="divide-y divide-line/60">
                 {list
                   .filter((r) => r.category === g)
                   .map((r) => {

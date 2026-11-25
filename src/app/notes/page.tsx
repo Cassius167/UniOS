@@ -81,7 +81,7 @@ function NoteEditor({ id, onDeleted }: { id: string; onDeleted: () => void }) {
         />
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           {note.tags.map((t) => (
-            <span key={t} className="num inline-flex items-center gap-1 rounded-[3px] bg-surface-2 px-1.5 py-0.5 text-[11px] text-muted">
+            <span key={t} className="num inline-flex items-center gap-1 rounded-xl bg-surface-2 px-1.5 py-0.5 text-[11px] text-muted">
               #{t}
               <button onClick={() => update("notes", note.id, { tags: note.tags.filter((x) => x !== t) })} aria-label={`Remove tag ${t}`}>
                 <X className="size-2.5" />
@@ -161,7 +161,7 @@ function NotesWorkspace() {
   const ScopeBtn = ({ s, icon: Icon, label, count, color }: { s: Scope; icon?: React.ComponentType<{ className?: string }>; label: string; count?: number; color?: string }) => {
     const active = JSON.stringify(s) === JSON.stringify(scope);
     return (
-      <button onClick={() => setScope(s)} className={cn("flex h-8 w-full items-center gap-2.5 rounded-[3px] px-2.5 text-left text-[13px]", active ? "bg-accent-soft text-ink" : "text-muted hover:bg-surface-2 hover:text-ink")}>
+      <button onClick={() => setScope(s)} className={cn("flex h-8 w-full items-center gap-2.5 rounded-xl px-2.5 text-left text-[13px]", active ? "bg-accent-soft text-ink" : "text-muted hover:bg-surface-2 hover:text-ink")}>
         {color ? <span className="size-2 rounded-full" style={{ background: color }} /> : Icon ? <Icon className="size-3.5" /> : null}
         <span className="flex-1 truncate">{label}</span>
         {count !== undefined && <span className="num text-[10px] text-faint">{count}</span>}
@@ -218,7 +218,7 @@ function NotesWorkspace() {
             <div className="eyebrow mb-1 mt-5 px-2.5">Tags</div>
             <div className="flex flex-wrap gap-1 px-2">
               {tags.map((t) => (
-                <button key={t} onClick={() => setScope({ kind: "tag", tag: t })} className={cn("num rounded-[3px] px-1.5 py-0.5 text-[11px]", scope.kind === "tag" && scope.tag === t ? "bg-ink text-bg" : "bg-surface-2 text-muted hover:text-ink")}>
+                <button key={t} onClick={() => setScope({ kind: "tag", tag: t })} className={cn("num rounded-xl px-1.5 py-0.5 text-[11px]", scope.kind === "tag" && scope.tag === t ? "bg-accent-strong text-on-accent-strong" : "bg-surface-2 text-muted hover:text-ink")}>
                   #{t}
                 </button>
               ))}
@@ -239,7 +239,7 @@ function NotesWorkspace() {
         </div>
         <Card className="max-h-[75vh] overflow-y-auto">
           {list.length ? (
-            <ul className="divide-y divide-line">
+            <ul className="divide-y divide-line/60">
               {list.map((n) => {
                 const c = n.courseId ? courseMap.get(n.courseId) : undefined;
                 return (
@@ -307,8 +307,8 @@ function NotesInner() {
     if (params.get("note")) setTab("notes");
   }, [params]);
   return (
-    <div className="fade-in">
-      <PageHeader index="07 — Notes & Resources" title="Notes & Resources" subtitle="Your personal knowledge base, organised by course, folder and tag." />
+    <div>
+      <PageHeader title="Notes & Resources" subtitle="Your personal knowledge base, organised by course, folder and tag." />
       <div className="mb-6">
         <Tabs
           value={tab}

@@ -1,6 +1,6 @@
 import type { AppData, GradeBand, Settings } from "../types";
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 /** UBC percentage-to-letter scale. Editable in Settings → Academic. */
 export const UBC_SCALE: GradeBand[] = [
@@ -32,7 +32,7 @@ export function defaultSettings(): Settings {
     passingGrade: 50,
     gradingScale: UBC_SCALE,
     weekStartsOn: 1,
-    theme: "system",
+    theme: "light",
     accent: "sage",
     sidebarCollapsed: false,
     dashboardWidgets: {

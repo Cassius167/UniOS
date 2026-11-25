@@ -97,8 +97,8 @@ export function SearchPalette() {
   if (!searchOpen) return null;
   let lastGroup = "";
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-[#18242b]/35 p-4 pt-[12vh]" onMouseDown={(e) => e.target === e.currentTarget && setSearchOpen(false)}>
-      <div className="fade-in w-full max-w-xl overflow-hidden rounded-[4px] border border-line bg-surface" role="dialog" aria-label="Search">
+    <div className="overlay-in fixed inset-0 z-50 flex items-start justify-center bg-[#18242b]/25 p-4 pt-[12vh] backdrop-blur-sm" onMouseDown={(e) => e.target === e.currentTarget && setSearchOpen(false)}>
+      <div className="pop-in w-full max-w-xl overflow-hidden rounded-3xl border border-line/70 bg-surface shadow-lift" role="dialog" aria-label="Search">
         <div className="flex items-center gap-3 border-b border-line px-4">
           <Search className="size-4 text-faint" />
           <input
@@ -136,7 +136,7 @@ export function SearchPalette() {
                 <button
                   onMouseEnter={() => setSel(i)}
                   onClick={r.go}
-                  className={cn("flex h-10 w-full items-center gap-3 rounded-[3px] px-2.5 text-left text-sm", i === sel ? "bg-surface-2 text-ink" : "text-ink-2")}
+                  className={cn("flex h-10 w-full items-center gap-3 rounded-xl px-2.5 text-left text-sm", i === sel ? "bg-surface-2 text-ink" : "text-ink-2")}
                 >
                   <r.icon className="size-4 shrink-0 text-faint" />
                   <span className="flex-1 truncate">{r.title}</span>
