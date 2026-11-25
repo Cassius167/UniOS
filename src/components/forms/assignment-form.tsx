@@ -151,6 +151,11 @@ export function AssignmentForm({ id, defaults, onClose }: { id?: string; default
               <Trash2 /> Delete
             </Button>
           )}
+          {existing?.url && (
+            <a href={existing.url} target="_blank" rel="noreferrer" className="mr-auto text-xs text-muted underline underline-offset-2 hover:text-ink">
+              Open in Canvas
+            </a>
+          )}
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>

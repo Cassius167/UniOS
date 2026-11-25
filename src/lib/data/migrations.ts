@@ -19,6 +19,7 @@ export function migrate(input: unknown): AppData {
   settings.profile = { ...defaults.profile, ...(raw.settings?.profile ?? {}) };
   settings.notifications = { ...defaults.notifications, ...(raw.settings?.notifications ?? {}) };
   settings.focus = { ...defaults.focus, ...(raw.settings?.focus ?? {}) };
+  settings.canvas = { ...defaults.canvas, ...(raw.settings?.canvas ?? {}) };
   settings.dashboardWidgets = { ...defaults.dashboardWidgets, ...(raw.settings?.dashboardWidgets ?? {}) };
 
   const arr = <K extends keyof AppData>(k: K) => (Array.isArray(raw[k]) ? raw[k] : base[k]) as AppData[K];

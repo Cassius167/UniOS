@@ -8,6 +8,7 @@ import { Topbar } from "./topbar";
 import { SearchPalette } from "./search";
 import { ThemeSync } from "./theme";
 import { ReminderService } from "./reminders";
+import { CanvasAutoSync } from "./canvas-autosync";
 import { ConfirmProvider, Toaster } from "@/components/ui/overlay";
 import { FormHost } from "@/components/forms/form-host";
 import { Button, Spinner } from "@/components/ui/primitives";
@@ -54,6 +55,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <SearchPalette />
           <FormHost />
           <ReminderService />
+          <CanvasAutoSync />
         </>
       )}
       {status === "ready" && error && (

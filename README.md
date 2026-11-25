@@ -65,6 +65,15 @@ supabase/schema.sql       Postgres tables + Row Level Security for the multi-use
 2. Implement `SupabaseRepository` against the `DataRepository` interface in `src/lib/data/repository.ts` and swap it in `src/lib/store.ts`.
 3. Add Supabase Auth; env vars will be `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (safe to expose: RLS enforces isolation). Never expose the service-role key.
 
+## Canvas
+
+Settings → Canvas has two connections, neither needs an access token:
+
+- **Calendar feed**: paste the Canvas *Calendar Feed* link. UniOS fetches it through `/api/canvas/feed` (server-side, CORS) when it opens and every 30 minutes, creating/updating assignments and Canvas events.
+- **Export bookmark**: a bookmarklet run on Canvas while signed in. It reads `/api/v1/courses` and `assignment_groups` with your existing session and downloads `canvas-export-*.json`, which UniOS imports with a preview. Records are matched by Canvas id, so re-imports update instead of duplicating.
+
+Code: `src/lib/canvas/` (tested in `canvas.test.ts`).
+
 ## Grade calculation rules
 
 - Ungraded assessments are never zero. "Mark as zero" in the form is the explicit way to record a missed item.
@@ -89,6 +98,7 @@ supabase/schema.sql       Postgres tables + Row Level Security for the multi-use
 | Notes (rich text, folders, tags, stars, search) and resources (links + file uploads) | Done |
 | Analytics: academic + productivity, weekly/monthly | Done |
 | Settings: profile, semesters, scale, appearance, notifications, export/import/backup/reset | Done |
+| Canvas: calendar feed auto-sync (due dates, events) and "Export to UniOS" bookmark (courses, weights, grades), merged without duplicates | Done (Settings → Canvas) |
 | Browser notifications | While a UniOS tab is open only |
 | AI assistant, document analysis | Not built (Phase 4); page shows honest status |
 | Google Calendar sync | Not built; events carry `source`/`externalId` for it |

@@ -13,6 +13,12 @@
 
 export type ID = string;
 
+/** Link to a record in an external system (e.g. Canvas), used to merge re-imports. */
+export interface ExternalRef {
+  source: "canvas";
+  id: string;
+}
+
 /* ─────────────────────────── Settings ─────────────────────────── */
 
 export interface Profile {
@@ -66,6 +72,14 @@ export interface FocusSettings {
   longBreak: number;
 }
 
+export interface CanvasSettings {
+  /** Private Canvas calendar feed (.ics) URL. Stored only in this browser. */
+  feedUrl: string;
+  autoSync: boolean;
+  lastFeedSync: string | null;
+  lastImport: string | null;
+}
+
 export interface Settings {
   profile: Profile;
   semesters: Semester[];
@@ -79,6 +93,7 @@ export interface Settings {
   dashboardWidgets: Record<DashboardWidget, boolean>;
   notifications: NotificationSettings;
   focus: FocusSettings;
+  canvas: CanvasSettings;
 }
 
 /* ─────────────────────────── Courses ─────────────────────────── */
@@ -109,6 +124,7 @@ export interface Course {
   /** Drop-lowest rules per assessment category, only applied when configured. */
   dropRules: DropRule[];
   archived: boolean;
+  external?: ExternalRef | null;
   isDemo: boolean;
   createdAt: string;
   updatedAt: string;
@@ -134,6 +150,7 @@ export interface Assessment {
   isBonus: boolean; // adds to the grade without adding to the denominator
   /** Excused items are removed from the grading structure entirely. */
   excused: boolean;
+  external?: ExternalRef | null;
   isDemo: boolean;
   createdAt: string;
   updatedAt: string;
@@ -186,6 +203,9 @@ export interface Assignment {
   submission: SubmissionStatus;
   subtasks: Subtask[];
   completedAt: string | null;
+  /** Link back to the source (e.g. the Canvas assignment page). */
+  url?: string | null;
+  external?: ExternalRef | null;
   isDemo: boolean;
   createdAt: string;
   updatedAt: string;
@@ -227,7 +247,7 @@ export interface CalendarEvent {
   exceptions: string[];
   reminderMinutes: number | null;
   /** Where the event came from — lets a Google Calendar sync coexist later. */
-  source: "local" | "google";
+  source: "local" | "google" | "canvas";
   externalId: string | null;
   isDemo: boolean;
   createdAt: string;

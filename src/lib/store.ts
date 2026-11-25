@@ -32,6 +32,8 @@ interface StoreState {
   /** Deletes a course and everything that belongs to it. */
   removeCourse(id: string): void;
   replaceAll(data: unknown): void;
+  /** Applies a pure transformation to the whole document (used by importers). */
+  transform(fn: (d: AppData) => AppData): void;
   removeDemoData(): void;
   loadDemoData(): void;
   reset(): Promise<void>;
@@ -142,6 +144,10 @@ export const useStore = create<StoreState>()((set, get) => {
       const data = migrate(raw); // throws on invalid input; caller shows the error
       set({ data });
       persist();
+    },
+
+    transform(fn) {
+      mutate(fn);
     },
 
     removeDemoData() {

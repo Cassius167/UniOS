@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { format } from "date-fns";
-import { Bell, Database, Download, GraduationCap, Palette, Plus, RotateCcw, Trash2, Upload, User } from "lucide-react";
+import { Bell, Database, Link2, Download, GraduationCap, Palette, Plus, RotateCcw, Trash2, Upload, User } from "lucide-react";
 import { Button, Card, Field, Input, PageHeader, Segmented, Select, Toggle } from "@/components/ui/primitives";
 import { toast, useConfirm } from "@/components/ui/overlay";
 import { useStore } from "@/lib/store";
@@ -10,6 +10,7 @@ import { uid } from "@/lib/ids";
 import { UBC_SCALE } from "@/lib/data/defaults";
 import { DASHBOARD_WIDGETS, type AccentColour, type DashboardWidget, type Profile, type Semester, type ThemeMode } from "@/lib/types";
 import { cn, downloadFile } from "@/lib/utils";
+import { CanvasSettings } from "@/components/canvas-settings";
 
 const WIDGET_LABEL: Record<DashboardWidget, string> = {
   today: "Today at a glance",
@@ -93,6 +94,7 @@ export default function SettingsPage() {
           ["academic", "Academic"],
           ["appearance", "Appearance"],
           ["notifications", "Notifications"],
+          ["canvas", "Canvas"],
           ["data", "Data"],
         ].map(([id, l]) => (
           <a key={id} href={`#${id}`} className="hover:text-ink">
@@ -305,6 +307,10 @@ export default function SettingsPage() {
             </div>
           </Row>
         </Card>
+      </Section>
+
+      <Section id="canvas" icon={Link2} title="Canvas" description="Bring courses, assignments, due dates, weights and grades in from Canvas. Works without an access token.">
+        <CanvasSettings />
       </Section>
 
       <Section id="data" icon={Database} title="Data" description="Everything is stored in this browser on this device. Export regularly to keep a backup or move to another device.">

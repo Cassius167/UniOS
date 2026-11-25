@@ -53,6 +53,7 @@ export function defaultSettings(): Settings {
       dailyPlanningTime: "08:00",
     },
     focus: { pomodoro: 25, deep: 50, shortBreak: 5, longBreak: 15 },
+    canvas: { feedUrl: "", autoSync: true, lastFeedSync: null, lastImport: null },
   };
 }
 
