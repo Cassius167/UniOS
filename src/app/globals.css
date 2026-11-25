@@ -1,26 +1,260 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ───────────────────────── Design tokens ─────────────────────────
+   Light: warm ivory paper, navy ink, sage accent, terracotta alerts.
+   Dark: deep navy-charcoal ground with softened ivory ink.
+   Every component reads these variables, so themes swap in one place. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f5f3ed;
+  --surface: #faf9f6;
+  --surface-2: #efede6;
+  --ink: #18242b;
+  --ink-2: #292d2e;
+  --muted: #5f6a6c;
+  --faint: #8c9393;
+  --line: #e5e4de;
+  --line-strong: #d3d1c8;
+  --sage: #879486;
+  --sage-soft: #e3e8e0;
+  --terra: #b87961;
+  --terra-soft: #f1e3dc;
+  --ochre: #b39a5f;
+  --ochre-soft: #efe8d6;
+  --accent: var(--sage);
+  --accent-soft: var(--sage-soft);
+  --accent-ink: #4f5c4f;
+  --on-accent: #faf9f6;
+  --ring: #18242b33;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #11191e;
+  --surface: #172128;
+  --surface-2: #1d2930;
+  --ink: #ece9e1;
+  --ink-2: #d9d6cd;
+  --muted: #a2aaa6;
+  --faint: #76807d;
+  --line: #26333a;
+  --line-strong: #33424a;
+  --sage: #9dab9b;
+  --sage-soft: #24312c;
+  --terra: #cf927a;
+  --terra-soft: #3a2823;
+  --ochre: #c9b07a;
+  --ochre-soft: #332d20;
+  --accent: var(--sage);
+  --accent-soft: var(--sage-soft);
+  --accent-ink: #c4cfc2;
+  --on-accent: #11191e;
+  --ring: #ece9e140;
+  color-scheme: dark;
+}
+
+/* Accent options (Settings → Appearance) */
+[data-accent="terracotta"] {
+  --accent: var(--terra);
+  --accent-soft: var(--terra-soft);
+  --accent-ink: #8a5440;
+}
+.dark[data-accent="terracotta"] {
+  --accent-ink: #e3b7a5;
+}
+[data-accent="navy"] {
+  --accent: #18242b;
+  --accent-soft: #e1e4e3;
+  --accent-ink: #18242b;
+}
+.dark[data-accent="navy"] {
+  --accent: #b9c4c9;
+  --accent-soft: #24323a;
+  --accent-ink: #d5dde0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-terra: var(--terra);
+  --color-terra-soft: var(--terra-soft);
+  --color-ochre: var(--ochre);
+  --color-ochre-soft: var(--ochre-soft);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
+
+  --font-sans: "DM Sans Variable", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Tabular figures for any numeric/mono reading */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* Restrained transitions only */
+.fade-in {
+  animation: fade-in 160ms ease-out;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* Rich-text note editor content */
+.prose-note {
+  line-height: 1.65;
+  font-size: 0.95rem;
+}
+.prose-note:focus {
+  outline: none;
+}
+.prose-note h1 {
+  font-family: var(--font-serif);
+  font-size: 1.9rem;
+  line-height: 1.15;
+  margin: 1rem 0 0.5rem;
+}
+.prose-note h2 {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  margin: 0.9rem 0 0.4rem;
+}
+.prose-note h3 {
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin: 0.8rem 0 0.3rem;
+}
+.prose-note p {
+  margin: 0.35rem 0;
+}
+.prose-note ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+  margin: 0.4rem 0;
+}
+.prose-note ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+  margin: 0.4rem 0;
+}
+.prose-note ul[data-checklist] {
+  list-style: none;
+  padding-left: 0.2rem;
+}
+.prose-note ul[data-checklist] li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+.prose-note ul[data-checklist] li::before {
+  content: "";
+  flex: none;
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 2px;
+  transform: translateY(0.1rem);
+  cursor: pointer;
+}
+.prose-note ul[data-checklist] li[data-checked="true"] {
+  color: var(--faint);
+  text-decoration: line-through;
+}
+.prose-note ul[data-checklist] li[data-checked="true"]::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.prose-note blockquote {
+  border-left: 2px solid var(--line-strong);
+  padding-left: 0.9rem;
+  color: var(--muted);
+}
+.prose-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-note code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface-2);
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+}
+.prose-note:empty::before {
+  content: attr(data-placeholder);
+  color: var(--faint);
+}
+
+/* Grid children may shrink below their content width (prevents mobile overflow). */
+.grid > * {
+  min-width: 0;
 }

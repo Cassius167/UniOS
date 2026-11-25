@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UniOS — University Operating System
 
-## Getting Started
+A personal command centre for university: schedule, assignments, grades, focus sessions, notes and analytics in one place.
 
-First, run the development server:
+## Run it
+
+Requires Node.js 20 or newer.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Other scripts:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Command | What it does |
+|---|---|
+| `npm test` | Unit tests (grade engine, recurrence, assignment ranking) |
+| `npm run typecheck` | TypeScript check |
+| `npm run lint` | ESLint |
+| `npm run build && npm start` | Production build |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+No environment variables are required. On first launch UniOS loads clearly-labelled **demo data** for a sample first-year UBCO engineering student. Remove it in **Settings → Data → Remove demo data**.
 
-## Learn More
+### Optional: AI assistant key (Phase 4, not built yet)
 
-To learn more about Next.js, take a look at the following resources:
+Create `.env.local`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The Study Assistant page will report "Key detected". The key is read only on the server (`src/lib/ai/provider.ts`, `server-only`) and never reaches browser code.
 
-## Deploy on Vercel
+## Where data lives
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Everything is stored **in your browser** (localStorage for records, IndexedDB for uploaded files). It persists across refreshes and restarts, but is per-browser and per-device. Use **Settings → Data → Export / Backup** regularly. Import restores a backup.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Architecture
+
+```
+src/
+  app/                    Next.js App Router pages (one folder per section)
+    api/ai/status/        Server route: reports AI configuration, never the key
+  components/
+    ui/                   Design-system primitives, modal, confirm dialog, toasts
+    shell/                Sidebar, top bar, quick-add, search (⌘K), theme, reminders, focus pill
+    forms/                Assignment / event / course / assessment forms (React Hook Form + Zod)
+    notes/, resources.tsx Rich-text editor and resource library
+    domain.tsx, charts.tsx Shared rows, tags, Recharts wrappers
+  lib/
+    types.ts              Data models (storage-agnostic, map 1:1 to supabase/schema.sql)
+    store.ts              Zustand store + typed CRUD, debounced persistence
+    data/                 Repository interface, LocalRepository, migrations, defaults, demo seed, file store
+    grades/engine.ts      Grade calculation engine (pure, fully tested)
+    calendar/recurrence.ts Recurring event expansion (tested)
+    assignments/priority.ts Attention score for "suggested order" (tested)
+    analytics.ts          All statistics, derived only from stored records
+supabase/schema.sql       Postgres tables + Row Level Security for the multi-user phase
+```
+
+### Moving to Supabase (Phase 5)
+
+1. Create a Supabase project and run `supabase/schema.sql` (tables, owner-only RLS policies, private storage bucket).
+2. Implement `SupabaseRepository` against the `DataRepository` interface in `src/lib/data/repository.ts` and swap it in `src/lib/store.ts`.
+3. Add Supabase Auth; env vars will be `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (safe to expose: RLS enforces isolation). Never expose the service-role key.
+
+## Grade calculation rules
+
+- Ungraded assessments are never zero. "Mark as zero" in the form is the explicit way to record a missed item.
+- **Average on completed work** = points earned ÷ graded weight. **Course percentage earned so far** = points earned ÷ 100.
+- Bonus items add points without adding weight. Excused items are removed.
+- Drop-lowest rules apply only when configured per category; kept items share the category weight equally.
+- If weights exceed 100%, grades are computed out of the total and a warning is shown.
+- Targets report *secured*, *achievable (needs X%)*, or *not possible (would need X%)*.
+- No rounding inside the engine; display rounds half away from zero. "Explain the calculation" shows every step.
+
+## Feature status
+
+| Area | Status |
+|---|---|
+| Design system, light/dark mode, accents, responsive layout | Done |
+| Overview dashboard (all widgets live, customisable) | Done |
+| Courses + per-course workspace (overview, assignments, grades, notes, resources, sessions) | Done |
+| Assignments: create/edit/delete, subtasks + templates, filters, sort, views, Kanban, suggested order | Done |
+| Calendar: month/week/day, recurring events, per-occurrence edit/delete, drag to reschedule, quick add, reminders | Done |
+| Grade tracker: weights, raw/percent, targets, required-on-final, scenario sliders, outcome chart, drop rules, bonus | Done |
+| Focus: Pomodoro/50-min/custom, breaks, pause/resume (survives reload), distractions, ratings, reflections | Done |
+| Notes (rich text, folders, tags, stars, search) and resources (links + file uploads) | Done |
+| Analytics: academic + productivity, weekly/monthly | Done |
+| Settings: profile, semesters, scale, appearance, notifications, export/import/backup/reset | Done |
+| Browser notifications | While a UniOS tab is open only |
+| AI assistant, document analysis | Not built (Phase 4); page shows honest status |
+| Google Calendar sync | Not built; events carry `source`/`externalId` for it |
+| Accounts, multi-user, sync across devices | Not built (Phase 5); schema + RLS ready |
